@@ -141,17 +141,20 @@ td {
   display: flex;
   justify-content: space-evenly;
 }
-.p,.pp {
+.p,
+.pp {
   width: 20%;
   text-align: center;
 }
 .p:hover {
   cursor: pointer;
 }
-.p img,.pp img {
+.p img,
+.pp img {
   width: 100%;
 }
-.p h3,.pp h3 {
+.p h3,
+.pp h3 {
   margin-top: 0.5vh;
 }
 .mlh:hover {
@@ -161,6 +164,19 @@ td {
 .mob_view {
   display: none;
 }
+.see_more {
+  background-color: #4d66df;
+  border: none;
+  padding: 0.5em;
+  font-size: 1.3vw;
+  color: #ffffff;
+  margin-bottom: 1em;
+}
+
+#rec_display {
+  display: none;
+}
+
 /* MOBILE */
 @media screen and (max-width: 1000px) {
   body {
@@ -205,7 +221,8 @@ td {
   .chris {
     display: none;
   }
-  .p h3,.pp h3 {
+  .p h3,
+  .pp h3 {
     font-size: 1.2em;
   }
   .info {
