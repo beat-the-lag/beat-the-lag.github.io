@@ -177,6 +177,22 @@ td {
   display: none;
 }
 
+    .content_s {
+      background-color: #ffffff;
+      width: 80%;
+      position: relative;
+      float: none;
+      display: inline-block;
+      margin-top: 2em;
+      line-height: 1.2em;
+    }
+    #chart_div,
+    #chart_div2,
+    #chart_div3 {
+      width: 90%;
+      margin-left: 5%;
+    }
+
 /* MOBILE */
 @media screen and (max-width: 1000px) {
   body {
