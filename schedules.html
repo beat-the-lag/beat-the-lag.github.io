@@ -1,38 +1,46 @@
 <!DOCTYPE html>
 <html>
-	<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Possible Schedules</title>
-		<link rel="stylesheet" href="/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Possible Schedules</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
     <script src="/script.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	</head>
-<style>
-  .content_s{
-    background-color:#ffffff;
-    width:80%;
-    position:relative;
-    float:none;
-    display:inline-block;
-    margin-top:2em;
-    line-height:1.2em;;
-  }
-  #chart_div{
-    width:90%;
-    margin-left:5%;
-  }
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+  </head>
+  <style>
+    .content_s {
+      background-color: #ffffff;
+      width: 80%;
+      position: relative;
+      float: none;
+      display: inline-block;
+      margin-top: 2em;
+      line-height: 1.2em;
+    }
+    #chart_div,
+    #chart_div2,
+    #chart_div3 {
+      width: 90%;
+      margin-left: 5%;
+    }
   </style>
   <script>
-    google.charts.load('current', {'packages':['timeline']});
+    google.charts.load("current", { packages: ["timeline"] });
     google.charts.setOnLoadCallback(drawChart1);
     google.charts.setOnLoadCallback(drawChart2);
     google.charts.setOnLoadCallback(drawChart3);
-    
+
     function drawChart1() {
-      //var schedules = JSON.parse(localStorage.getItem("schedules"));
-      var schedules = [[[0, 8, 5, 13], [4, 12, 9, 19], 10], [[[0, 8, 5, 13], [6, 14, 11, 21], 5], [[0, 8, 5, 13], [8, 16, 13, 23], 20]]
+      var schedules = JSON.parse(localStorage.getItem("schedules"));
+      //var schedules = [[[22, 6, 3, 11], [4, 12, 9, 19], 10], [[22, 6, 3, 11], [6, 14, 11, 21], 5], [[22, 6, 3, 11], [8, 16, 13, 23], 20]]
       /*
       console.log(schedules);
       var allTables = [];
@@ -63,35 +71,98 @@
       
       
       */
+
       console.log(schedules);
+      document.getElementById("score1").innerHTML = schedules[0][
+        schedules[0].length - 1
+      ].toString();
       var allTables = [];
-      
-              
-      var goog1 = [['Activity', 'Start Time', 'End Time']];
-      
+      var goog1 = [["Activity", "Start Time", "End Time"]];
+
       //for day (len of schedule -1) in schedule, addpend [day[0],day[1]] to goog
       var day = 0;
-      while (day < schedules[0].length - 1){
-        goog1.push([day.toString(),new Date(2020,06,20,schedules[0][day][0]),new Date(2020,06,20,schedules[0][day][1])]);
+      while (day < schedules[0].length - 1) {
+        var d_s = 20; // 19 or 20
+        var d_e = 20; // 19 or 20
+
+        secret_formula(schedules[0][day][0], schedules[0][day][1]);
+        function secret_formula(hr_start, hr_end) {
+          //outputs 19 or 20
+          if (hr_start > hr_end) {
+            d_s = 19;
+          }
+        }
+        console.log(
+          new Date(localStorage.getItem("departure_string")).getMonth() + 1
+        );
+        var majorDateChange = 0; //-31, 0 or 31
+        /*if ((new Date(localStorage.getItem("departure_string")).getDate() - schedules[0].length + 1 + day) > 31) {
+            majorDateChange = -31;
+            } else if ((new Date(localStorage.getItem("departure_string")).getDate() - schedules[0].length + 1 + day) < 1) {
+                       majorDateChange = 31;
+                       }*/
+        var majorMonthChange = 0; // -11, -1, 0, 1 or 11
+        /*if (majorDateChange != 0) {
+          if (majorDateChange == -31) {
+            if (new Date(localStorage.getItem("departure_string")).getMonth() + 1 == 12) { // there is an extra ) before the ==
+              majorMonthChange = -11;//bruh im so dumb.. how many lines like this should there be
+            } else {//uhhhhh well i already have them where they're supposed to be (3 of them) ok
+              majorMonthChange = 1;
+            }
+          } else {
+            if (new Date(localStorage.getItem("departure_string")).getMonth() + 1 == 1) {
+              majorMonthChange = 11;
+            } else {
+              majorMonthChange = -1;
+            }
+          }*/
+        var majorYearChange = 0; // -1, 0 or 1
+        /*if (majorMonthChange == -11) {
+          majorYearChange = 1;
+        } else if (majorMonthChange == 11) {
+          majorYearChange = -1;
+        }*/
+        goog1.push([
+          (
+            new Date(localStorage.getItem("departure_string")).getFullYear() +
+            majorYearChange
+          ).toString() +
+            "/" +
+            (
+              new Date(localStorage.getItem("departure_string")).getMonth() +
+              1 +
+              majorMonthChange
+            ).toString() +
+            "/" +
+            (
+              new Date(localStorage.getItem("departure_string")).getDate() -
+              schedules[0].length +
+              1 +
+              day +
+              majorDateChange
+            ).toString(),
+          new Date(2020, 06, d_s, schedules[0][day][0]),
+          new Date(2020, 06, d_e, schedules[0][day][1])
+        ]);
         day += 1;
-      };
-      
-      //you think maybe we should fully seperate all 3, that might work
+      }
+
       console.log("goog");
       console.log(goog1);
-        
+
       var data1 = google.visualization.arrayToDataTable(goog1);
-        
-      
+
       var options = {
-        height: 450,
-        colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+        height: 230,
+        colors: ["#0e4d92", "#95c8d8", "#588bae", "#89cff0", "#4682b4"]
       };
 
-        var chart = new google.visualization.Timeline(document.getElementById('chart_div'));
+      var chart = new google.visualization.Timeline(
+        document.getElementById("chart_div")
+      );
 
-        chart.draw(data1, options);
-      
+      chart.draw(data1, options);
+
       /*
         //lets test up to here
         var k;//we sort each schedule
@@ -113,10 +184,10 @@
         
       };
   };*/
-}
+    }
     function drawChart2() {
-      //var schedules = JSON.parse(localStorage.getItem("schedules"));
-      var schedules = [[[0, 8, 5, 13], [4, 12, 9, 19], 10], [[0, 8, 5, 13], [6, 14, 11, 21], 5], [[0, 8, 5, 13], [8, 16, 13, 23], 20]]
+      var schedules = JSON.parse(localStorage.getItem("schedules"));
+      //var schedules = [[[22, 6, 3, 11], [4, 12, 9, 19], 10], [[22, 6, 3, 11], [6, 14, 11, 21], 5], [[22, 6, 3, 11], [8, 16, 13, 23], 20]]
       /*
       console.log(schedules);
       var allTables = [];
@@ -148,31 +219,95 @@
       
       */
       console.log(schedules);
-      var allTables = [];     
-     
-      var goog2 = [['Activity', 'Start Time', 'End Time']];
-     
+      document.getElementById("score2").innerHTML = schedules[1][
+        schedules[1].length - 1
+      ].toString();
+      var allTables = [];
+
+      var goog2 = [["Activity", "Start Time", "End Time"]];
+
       //for day (len of schedule -1) in schedule, addpend [day[0],day[1]] to goog
       var day = 0;
-      while (day < schedules[1].length - 1){
-        goog2.push([day.toString(),new Date(2020,06,20,schedules[1][day][0]),new Date(2020,06,20,schedules[1][day][1])]);
+      while (day < schedules[1].length - 1) {
+        var d_s = 20; // 19 or 20
+        var d_e = 20; // 19 or 20
+
+        secret_formula(schedules[1][day][0], schedules[1][day][1]);
+        function secret_formula(hr_start, hr_end) {
+          //outputs 19 or 20
+          if (hr_start > hr_end) {
+            d_s = 19;
+          }
+        }
+        var majorDateChange = 0; //-31, 0 or 31
+        /*if (new Date(localStorage.getItem("departure_string")).getDate() - schedules[1].length + 1 + day > 31) {
+            majorDateChange = -31;
+            } else if (new Date(localStorage.getItem("departure_string")).getDate() - schedules[1].length + 1 + day < 1) {
+                       majorDateChange = 31;
+                       }*/
+        var majorMonthChange = 0; // -11, -1, 0, 1 or 11
+        /*if (majorDateChange != 0) {
+          if (majorDateChange == -31) {
+            if (new Date(localStorage.getItem("departure_string")).getMonth() + 1 == 12) {
+              majorMonthChange = -11;
+            } else {
+              majorMonthChange = 1;
+            }
+          } else {
+            if (new Date(localStorage.getItem("departure_string")).getMonth() + 1 == 1) {
+              majorMonthChange = 11;
+            } else {
+              majorMonthChange = -1;
+            }
+          }*/
+        var majorYearChange = 0; // -1, 0 or 1
+        /*if (majorMonthChange == -11) {
+          majorYearChange = 1;
+        } else if (majorMonthChange == 11) {
+          majorYearChange = -1;
+        }*/
+        goog2.push([
+          (
+            new Date(localStorage.getItem("departure_string")).getFullYear() +
+            majorYearChange
+          ).toString() +
+            "/" +
+            (
+              new Date(localStorage.getItem("departure_string")).getMonth() +
+              1 +
+              majorMonthChange
+            ).toString() +
+            "/" +
+            (
+              new Date(localStorage.getItem("departure_string")).getDate() -
+              schedules[1].length +
+              1 +
+              day +
+              majorDateChange
+            ).toString(),
+          new Date(2020, 06, d_s, schedules[1][day][0]),
+          new Date(2020, 06, d_e, schedules[1][day][1])
+        ]);
         day += 1;
-      };
-      //you think maybe we should fully seperate all 3, that might work
+      }
+
       console.log("goog");
       console.log(goog2);
-  
+
       var data2 = google.visualization.arrayToDataTable(goog2);
-        
+
       var options = {
-        height: 450,
-        colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+        height: 550,
+        width: 1050,
+        colors: ["#0e4d92", "#95c8d8", "#588bae", "#89cff0", "#4682b4"]
       };
 
-        var chart2 = new google.visualization.Timeline(document.getElementById('chart_div2'));
+      var chart2 = new google.visualization.Timeline(
+        document.getElementById("chart_div2")
+      );
 
-        chart2.draw(data2, options);
-      
+      chart2.draw(data2, options);
+
       /*
         //lets test up to here
         var k;//we sort each schedule
@@ -194,10 +329,10 @@
         
       };
   };*/
-}
+    }
     function drawChart3() {
-      //var schedules = JSON.parse(localStorage.getItem("schedules"));
-      var schedules = [[[0, 8, 5, 13], [4, 12, 9, 19], 10], [[[0, 8, 5, 13], [6, 14, 11, 21], 5], [[0, 8, 5, 13], [8, 16, 13, 23], 20]]
+      var schedules = JSON.parse(localStorage.getItem("schedules"));
+      //var schedules = [[[22, 6, 3, 11], [4, 12, 9, 19], 10], [[22, 6, 3, 11], [6, 14, 11, 21], 5], [[22, 6, 3, 11], [8, 16, 13, 23], 20]]
       /*
       console.log(schedules);
       var allTables = [];
@@ -229,31 +364,95 @@
       
       */
       console.log(schedules);
+      document.getElementById("score3").innerHTML = schedules[2][
+        schedules[2].length - 1
+      ].toString();
       var allTables = [];
-      
-      var goog3 = [['Activity', 'Start Time', 'End Time']];
-      
+
+      var goog3 = [["Activity", "Start Time", "End Time"]];
+
       //for day (len of schedule -1) in schedule, addpend [day[0],day[1]] to goog
       var day = 0;
-      while (day < schedules[2].length - 1){
-        goog3.push([day.toString(),new Date(2020,06,20,schedules[2][day][0]),new Date(2020,06,20,schedules[2][day][1])]);
+      while (day < schedules[2].length - 1) {
+        var d_s = 20; // 19 or 20
+        var d_e = 20; // 19 or 20
+
+        secret_formula(schedules[2][day][0], schedules[2][day][1]);
+        function secret_formula(hr_start, hr_end) {
+          //outputs 19 or 20
+          if (hr_start > hr_end) {
+            d_s = 19;
+          }
+        }
+        var majorDateChange = 0; //-31, 0 or 31
+        /*if (new Date(localStorage.getItem("departure_string")).getDate() - schedules[2].length + 1 + day > 31) {
+            majorDateChange = -31;
+            } else if (new Date(localStorage.getItem("departure_string")).getDate() - schedules[2].length + 1 + day < 1) {
+                       majorDateChange = 31;
+                       };*/
+        var majorMonthChange = 0; // -11, -1, 0, 1 or 11
+        /*if (majorDateChange != 0) {
+          if (majorDateChange == -31) {
+            if (new Date(localStorage.getItem("departure_string")).getMonth() + 1 == 12) {
+              majorMonthChange = -11;
+            } else {
+              majorMonthChange = 1;
+            };
+          } else {
+            if (new Date(localStorage.getItem("departure_string")).getMonth() + 1 == 1) {
+              majorMonthChange = 11;
+            } else {
+              majorMonthChange = -1;
+            };
+          }*/
+        var majorYearChange = 0; // -1, 0 or 1
+        /*if (majorMonthChange == -11) {
+          majorYearChange = 1;
+        } else if (majorMonthChange == 11) {
+          majorYearChange = -1;
+        } */
+        goog3.push([
+          (
+            new Date(localStorage.getItem("departure_string")).getFullYear() +
+            majorYearChange
+          ).toString() +
+            "/" +
+            (
+              new Date(localStorage.getItem("departure_string")).getMonth() +
+              1 +
+              majorMonthChange
+            ).toString() +
+            "/" +
+            (
+              new Date(localStorage.getItem("departure_string")).getDate() -
+              schedules[2].length +
+              1 +
+              day +
+              majorDateChange
+            ).toString(),
+          new Date(2020, 06, d_s, schedules[2][day][0]),
+          new Date(2020, 06, d_e, schedules[2][day][1])
+        ]);
         day += 1;
-      };
-      //you think maybe we should fully seperate all 3, that might work
+      }
+
       console.log("goog");
       console.log(goog3);
 
       var data3 = google.visualization.arrayToDataTable(goog3);
-        
+
       var options = {
-        height: 450,
-        colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'],
+        height: 300,
+        width: 1050,
+        colors: ["#0e4d92", "#95c8d8", "#588bae", "#89cff0", "#4682b4"]
       };
 
-        var chart3 = new google.visualization.Timeline(document.getElementById('chart_div3'));
+      var chart3 = new google.visualization.Timeline(
+        document.getElementById("chart_div3")
+      );
 
-        chart3.draw(data3, options);
-      
+      chart3.draw(data3, options);
+
       /*
         //lets test up to here
         var k;//we sort each schedule
@@ -275,12 +474,14 @@
         
       };
   };*/
-}
-    
-</script>
-	<body onload="schedules_initialize()">
+    }
+  </script>
+  <body onload="schedules_initialize()">
     <div class="header">
-      <img class="logo" src="https://live.staticflickr.com/65535/50072888358_0e5190b448_o.png"/>
+      <img
+        class="logo"
+        src="https://live.staticflickr.com/65535/50072888358_0e5190b448_o.png"
+      />
       <div class="menu">
         <h1 onclick="window.location='../index.html'">Jet Lag Calculator</h1>
         <h1 onclick="window.location='../about.html'">About</h1>
@@ -288,50 +489,66 @@
       </div>
     </div>
     <div class="sub_schedules">
-        <h2>
-          Possible Schedules
-        </h2>
-        <p> The first schedule listed is based on your own preferences. However, if you click on See Recommended Schedules,
-          you will see sleep routines generated by our algorithm aimed at minimizing your jet lag.
-          <br/><br/>
-          These schedules are ranked in accordance to their Jet Lag Score, which rates your comfort and best interests
-          in terms of dealing with jet lag.</p>
+      <h2>
+        Possible Schedules
+      </h2>
+      <p>
+        The first schedule listed is based on your own preferences. However, if
+        you click on See Recommended Schedules, you will see sleep routines
+        generated by our algorithm aimed at minimizing your jet lag.
+        <br /><br />
+        These schedules are ranked in accordance to their Jet Lag Score, which
+        rates your comfort and best interests in terms of dealing with jet lag.
+      </p>
     </div>
     <div class="display_preferences">
       <h2>
         Your Preferences
       </h2>
-      <p class="preferences">
+      <div class="preferences">
         <div class="p_left">
-          Shifting Start Date: <span id="p_shift">yyyy-mm-dd</span><br/><br/>
+          Shifting Start Date: <span id="p_shift">yyyy-mm-dd</span><br /><br />
           Sleeping During Commute: <span id="p_sleep">y/n</span>
         </div>
         <div class="p_right">
-          Alcohol During Commute: <span id="p_alcohol">y/n</span><br/><br/>
+          Alcohol During Commute: <span id="p_alcohol">y/n</span><br /><br />
           Caffeine During Commute: <span id="p_caffeine">y/n</span>
+        </div>
       </div>
-      </p>
     </div>
-  <br/>
-  <div class="content_s">
-    <h2>
-      Your Schedule
-    </h2>
-    <h4>
-      This schedule is based off of your preferences.<br/>
-      It has a Jet Lag Score of <span id="score1">15</span>. Remember: the lower the score, the better.<br/>
-      To view our recommended schedules with better Jet Lag Scores, click the button below the graph.
-    </h4>
-    <div id="chart_div"></div>
-    <h2>
-      Recommended Schedules
-    </h2>
-    <div id="chart_div2">
-      
+    <br />
+    <div class="content_s">
+      <h2>
+        Your Schedule
+      </h2>
+      <h4>
+        This schedule is based off of your preferences.<br />
+        It has a Jet Lag Score of <span id="score1"></span>. Remember: the
+        higher the score, the better.<br />
+        To view our recommended schedules with better Jet Lag Scores, click the
+        button below the graph.
+      </h4>
+      <div id="chart_div"></div>
+      <button class="see_more" onclick="d_schedules();" id="rec_btn">
+        Show Recommended Schedules
+      </button>
+      <div id="rec_display">
+        <h2>
+          Recommended Schedules
+        </h2>
+        <p>
+          This schedule will be the least taxing on your body since you only
+          shift by an hour a day but you will have to start shifting sooner.<br />
+          Jet Lag Score: <span id="score2">15</span>
+        </p>
+        <div id="chart_div2"></div>
+        <p>
+          This schedule is similar to the one above except the shifting does not
+          start as early.<br />
+          Jet Lag Score: <span id="score3">15</span>
+        </p>
+        <div id="chart_div3"></div>
+      </div>
     </div>
-    <div id="chart_div3">
-      
-    </div>
-  </div>
-	</body>
+  </body>
 </html>
