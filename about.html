@@ -4,65 +4,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Beat the Lag</title>
+    <title>About</title>
     <link rel="stylesheet" href="/style.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat"
       rel="stylesheet"
     />
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa81zlX8J1pwvFiyGdyG-ndmm69sfuoBk&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
-    <script
-      type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa81zlX8J1pwvFiyGdyG-ndmm69sfuoBk&libraries=places"
-    ></script>
-    <script src="/script.js" defer></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
-    />
-    <link rel="stylesheet" href="./autofill_style.css" />
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <style></style>
-  <script>
-    (function(exports) {
-      "use strict";
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 2.5,
-          center: {
-            lat: lat2,
-            lng: lng2
-          },
-          mapTypeId: "terrain"
-        });
-        var flightPlanCoordinates = [
-          {
-            lat: lat1,
-            lng: lng1
-          },
-          {
-            lat: lat2,
-            lng: lng2
-          }
-        ];
-        var flightPath = new google.maps.Polyline({
-          path: flightPlanCoordinates,
-          geodesic: true,
-          strokeColor: "#001ba2",
-          strokeOpacity: 1.0,
-          strokeWeight: 5
-        });
-        flightPath.setMap(map);
-      }
-
-      exports.initMap = initMap;
-    })((this.window = this.window || {}));
-  </script>
   <body>
     <div class="header">
       <img
@@ -75,133 +24,46 @@
         <h1 onclick="window.location='../connect.html'">Connect</h1>
       </div>
     </div>
-    <div class="calculator">
-      <form action="" class="info">
-        <div class="left">
-          <div class="left_box">
-            <label>Flying From:</label>
-            <!-- on change only activates when selected, which is good-->
-            <input
-              id="autocomplete"
-              name="dest"
-              type="text"
-              placeholder="City or Airport Code"
-              class="i"
-            />
-          </div>
-          <div class="right_box">
-            <label>Flying To:</label>
-            <input
-              id="autocomplete2"
-              name="arri"
-              type="text"
-              placeholder="City or Airport Code"
-              class="i"
-              onchange="update_end()"
-            />
-          </div>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.1/lodash.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-          <script src="https://unpkg.com/fuse.js@2.5.0/src/fuse.min.js"></script>
-          <script src="https://screenfeedcontent.blob.core.windows.net/html/airports.js"></script
-          ><script src="./autofill_script.js"></script>
-          <div id="map"></div>
-          <!--
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726928.6363762277!2d-160.91681021264074!3d24.186502184584263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc91a1520bb5927%3A0xc878a584f74e98b2!2sAI%20Embed!5e0!3m2!1sen!2sca!4v1593811436984!5m2!1sen!2sca" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-        --></div>
-        <div class="right">
-          <div>
-            <label for="d_time">Departure Date:</label><br />
-            <input
-              type="datetime-local"
-              id="d_time"
-              name="d_time"
-              class="i"
-            /><br />
-          </div>
-          <div>
-            <label for="a_time">Arrival Date:</label><br />
-            <input
-              type="datetime-local"
-              id="a_time"
-              name="a_time"
-              class="i"
-            /><br />
-          </div>
-          <div>
-            <label for="sleep">Usual Sleep Schedule:</label><br /><span
-              class="mob_view"
-              ><br
-            /></span>
-            <label>Sleep: </label>
-            <input type="time" id="sleep" name="sleep" class="i" /><span
-              class="mob_view"
-              ><br
-            /></span>
-            <label style="margin-left:1em;">Wake Up:</label>
-            <input type="time" id="wake" name="wake" class="i" /><br />
-          </div>
-          <div>
-            <label for="shift">Shifting Start Date: </label><br />
-            <input type="date" id="shift" name="shift" class="i" /><br />
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="plane_sleep"
-              name="plane_sleep"
-              class="i"
-              value="Yes"
-            />
-            <label for="plane_sleep" class="chbx"
-              >You plan on sleeping during your commute </label
-            ><br /><span class="mob_view"><br /><br /></span>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="alcohol"
-              name="alcohol"
-              class="i"
-              value="Yes"
-            />
-            <label for="alcohol" class="chbx"
-              >You plan on drinking alcohol during your commute </label
-            ><br /><span class="mob_view"><br /><br /></span>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="caffeine"
-              name="caffeine"
-              class="i"
-              value="Yes"
-            />
-            <label for="caffeine" class="chbx"
-              >You plan on having caffeine after your commute </label
-            ><br /><span class="mob_view"><br /><br /></span>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="caffeine_excess"
-              name="caffeine"
-              class="i"
-              value="Yes"
-            />
-            <label for="caffeine" class="chbx"
-              >You plan on having more than 150 mg of caffeine (1 small cup) </label
-            ><br />
-          </div>
-          <input
-            type="submit"
-            value="See Your Schedule"
-            onclick="save_preferences()"
-            class="submit_btn"
-            formaction="schedules.html"
-          />
-        </div>
-      </form>
+    <div class="about_content">
+      <h2>
+        Beat the Lag
+      </h2>
+      <p>
+        With Beat the Lag, you can calculate your sleep routine based on your
+        own personal schedule. You'll be able to see your routine's Jet Lag
+        Score and compare it with other recommended routines generated by our
+        algorithm that are aimed to making your experience, and Jet Lag Score,
+        as good as possible.
+      </p>
+      <br />
+      <h2>
+        What is Jet Lag?
+      </h2>
+      <p>
+        Jet lag is a temporary disorder that affects people who travel across
+        multiple time zones. It is a sleep disorder and is caused by the fact
+        that during this type of travel, one's internal clock and the local time
+        of the placed traveled to do not match.
+        <br /><br />
+        When a person is jet lagged, they often report feeling drowsy, tired,
+        irritable, and disoriented. Often times, it may take multiple days to
+        recover from this.
+      </p>
+      <br />
+      <h2>
+        Ways to Fight Jet Lag
+      </h2>
+      <p>
+        One of the best ways to prevent jet lag from happening is to gradually
+        familiarize yourself, and your body, with the local time of your travel
+        destination. Experts recommend shifting your sleep time by around an
+        hour every day for a number of days before your travel until you are
+        matched up with the destination's time.
+        <br /><br />
+        Other factors also come into play when you are trying to reduce the
+        effects such as jet lag such alcohol and caffeine consumption, as well
+        as if you sleep during your commute.
+      </p>
     </div>
   </body>
 </html>
