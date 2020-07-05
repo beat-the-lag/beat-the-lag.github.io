@@ -168,13 +168,13 @@ function generate_schedules() {
 
   localStorage.setItem("schedules", JSON.stringify(schedules));
   show_schedules();
-}
+};
 
 function show_schedules() {
   var schedules = JSON.parse(localStorage.getItem("schedules"));
-}
+};
 
 function d_schedules() {
   document.getElementById("rec_display").style.display = "block";
   document.getElementById("rec_btn").style.display = "none";
-}
+};
